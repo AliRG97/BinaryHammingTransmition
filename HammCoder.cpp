@@ -40,10 +40,7 @@ bool Encoder::HammCheck(const biMatrix& T)  {
 
 //Constructor :
 
-Encoder::Encoder (const int rank ,const biMatrix& M , bool ParBit) : n (pow(2, rank)-1) , ParCheck(rank,n) , Generator(n - rank , n) {
-    r = rank;
-    ParCheckBit = ParBit;
-    ParCheck = M;
+Encoder::Encoder (const int rank ,const biMatrix& M , bool ParBit) : r(rank) , ParCheckBit(ParBit) , n (pow(2, rank)-1) , ParCheck(M) , Generator(n - rank , n) {
     Generator = PrepGen(ParCheck);
 }
 
@@ -56,7 +53,7 @@ biMatrix Encoder::ParCheckReduce(const biMatrix& T) {
     for (int i = k-1; i >= 0; i--) {
         biVector S1 (Res, length-k+i, 'c');
         biVector R1(Res, i , 'r');
-        if (!S1[i]) {
+        if (not S1[i]) {
             int j;
             for (j = 0; j < length-k+i; j++) {
                 biVector S2(Res,j,'c');
@@ -110,9 +107,8 @@ Encoder& Encoder::Encode() {
     string cStr = "";
     string mPart;
     string cPart;
-    bool Check;
     for (int i = 0; i < d; i++) {
-        Check = false;
+        bool Check = false;
         mPart = "";
         cPart = "";
         for (int j = 0; j < k; j++) {
@@ -140,8 +136,8 @@ string Encoder::Output() {
 
 // Constructor :
 
-Decoder::Decoder (const int rank , const biMatrix& T, bool ParBit) : n(pow(2, rank)-1),  ParCheck(T) , Message(1,n) {
-    r = rank;
+Decoder::Decoder (const int rank , const biMatrix& T, bool ParBit) : r(rank) , reSendNum(0) , n(pow(2, rank)-1),  ParCheck(T) , Message(1,n) {
+    reSend = nullptr;
     ParCheck = Encoder::ParCheckReduce(ParCheck);
     ParCheckBit = ParBit;
 }
@@ -179,7 +175,7 @@ bool Decoder::Decode() {
         biVector CodePiece(cPart);
         Error = CodePiece*(ParCheck.Transpose());
         biVector msg (n-r);
-        if (!DecodePart(msg, cPart,Error,Check)) {
+        if (not DecodePart(msg, cPart,Error,Check) ) {
             reSend[i] = true;
             reSendNum++;
         }
@@ -210,7 +206,7 @@ bool Decoder::DecodePart(biVector& res, const biVector Code, const biVector Erro
     for (int j = 0; j < n-r; j++) {
         res[j] = Code.getElement(j);
     }
-    if (!Error.getValue()) {
+    if (not Error.getValue()) {
         return true;
     }
     if (check) {

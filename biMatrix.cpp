@@ -80,6 +80,9 @@ biMatrix biMatrix::Transpose() const {
 //Operators :
 
 biMatrix& biMatrix::operator=(const biMatrix& T) {
+    if (&T == this) {
+        return *this;
+    }
     this->~biMatrix();
     rows = T.rows;
     columns = T.columns;
@@ -108,7 +111,7 @@ bool biMatrix::operator== (const biMatrix& T) const {
 }
 
 bool biMatrix::operator!= ( const biMatrix& T ) const {
-    return !operator== (T);
+    return not operator== (T);
 }
 
 biMatrix biMatrix::operator+(const biMatrix& T) const {

@@ -35,7 +35,7 @@ biMatrix ParCheckGen (int r) {
         biVector S ( M, j , 'c');
         int temp = 1;
         for (int i = r - 1; i >= 0; i--) {
-            if (!temp) {
+            if (not temp) {
                 S[i] = M.getElement(i, j-1);
             }
             else {
@@ -54,11 +54,11 @@ biMatrix ParCheckGen (int r) {
 
 int main() {
     int r;
-    int n;
     bool parcheck = false;      //Parity-Check Bit
     bool def = true;            //Default Parity-Check Matrix
     bool run;
     while (run) {
+        int n;
         cout << " Welcome to Binary Hamming Code Transmition Simulator :\n Please Enter Your Intended Rank : \n ";
         cin >> r;
         while (r <= 1) {
@@ -70,21 +70,21 @@ int main() {
         biMatrix defM = ParCheckGen(r);
         M = defM;
         bool ready = false;
-        while (!ready) {
+        while (not ready) {
             cout << " 1)Start Process\t2)Options\n ";
             char c;
             cin >> c;
             switch (c) {
                 case '2':
-                    cout << " 1)Parity-Check Bit : " << (parcheck ? "On" : "Off") << " --> " << (!parcheck ? "On" : "Off") << "\n 2)Hamming Code : " << ( def ? "Default" : "Manual") << " --> " << (def ? "Manual" : "Default") << "\n ";
+                    cout << " 1)Parity-Check Bit : " << (parcheck ? "On" : "Off") << " --> " << (not parcheck ? "On" : "Off") << "\n 2)Hamming Code : " << ( def ? "Default" : "Manual") << " --> " << (def ? "Manual" : "Default") << "\n ";
                     cin >> c;
                     switch (c) {
                         case '1':
-                            parcheck = !parcheck;
+                            parcheck = not parcheck;
                             cout << " Done!\n";
                             break;
                         case '2':
-                            def = !def;
+                            def = not def;
                             if (def) {
                                 M = defM;
                                 break;
@@ -97,7 +97,7 @@ int main() {
                             else
                             {
                                 cout << " Matrix is invalid!\n";
-                                def = !def;
+                                def = not def;
                             }
                             break;
                         default:
@@ -148,7 +148,7 @@ int main() {
                 cout << "\n ";
             }
             bool pass = false;
-            while (!pass) {
+            while (not pass) {
                 cout << "\n 1)Next Message\t2)Main Menu\t0)Exit\n ";
                 char c;
                 cin >> c;

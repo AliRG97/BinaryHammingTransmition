@@ -86,7 +86,7 @@ bool biVector::operator==(const biVector& T) const {
 }
 
 bool biVector::operator!=(const biVector& T) const {
-    return !operator==(T);
+    return not operator==(T);
 }
 
 biVector biVector::operator*(const biMatrix& T) const {
@@ -117,6 +117,9 @@ bool& biVector::operator[] ( const int n ) {
 }
 
 biVector& biVector::operator=(const biVector& T) {
+    if (&T == this) {
+        return *this;
+    }
     this->~biVector();
     lenght = T.getLenght();
     rows = 1;
