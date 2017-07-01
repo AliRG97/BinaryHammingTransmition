@@ -136,7 +136,7 @@ string Encoder::Output() {
 
 // Constructor :
 
-Decoder::Decoder (const int rank , const biMatrix& T, bool ParBit) : r(rank) , n(pow(2, rank)-1),  ParCheck(T) , Message(1,n) {
+Decoder::Decoder (const int rank , const biMatrix& T, bool ParBit) : r(rank) , reSendNum(0) , n(pow(2, rank)-1),  ParCheck(T) , Message(1,n) {
     reSend = nullptr;
     ParCheck = Encoder::ParCheckReduce(ParCheck);
     ParCheckBit = ParBit;
